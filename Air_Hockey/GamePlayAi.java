@@ -15,6 +15,9 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
 
 
     private StartMenu Startmenu;
+
+    private float xBVelocity = 1f;  // Adjust the initial velocity as needed
+    private float yBVelocity = 2f;
     int currentPlayer1 = 0;
     int CurrentPlayer2 = 0;
     int maxWidth = 100;
@@ -22,6 +25,8 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
     int xposition = 45, yposition = 5;
     int x = 45, y = 90;
     int xB = 45, yB = 40;
+    private float xBVelocity = 1f;  // Adjust the initial velocity as needed
+    private float yBVelocity = 2f;
 
 
 
@@ -59,6 +64,131 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
 
     }
 
+    public void setting (){
+        if (xB<=0||xB>=maxWidth-10){
+            xBVelocity*=-1;
+        }
+        if (yB<=0||yB>=maxHeight-10){
+            yBVelocity*=-1;
+        }
+        xB+=xBVelocity;
+        yB+=yBVelocity;
+        if (collision_top_left(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity>0){
+                xBVelocity*=-1;
+            }
+        }
+        if (collision_top_right(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+
+        }
+        if (collision_down_left(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB-=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+        }
+
+        if (collision_down_right(xB,yB , xposition,yposition)) {
+            yBVelocity *= -1;
+            yB -= 2;
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_right(xB,yB , xposition,yposition)) {
+
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_left(xB,yB , xposition,yposition)) {
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity < 0) {
+                xBVelocity *= -1;
+            }
+        }
+
+        //player 2
+        if (collision_top_left(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity>0){
+                xBVelocity*=-1;
+            }
+        }
+        if (collision_top_right(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+
+        }
+        if (collision_down_left(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB-=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+        }
+
+        if (collision_down_right(xB,yB , x,y)) {
+            yBVelocity *= -1;
+            yB -= 2;
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_right(xB,yB , x,y)) {
+
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_left(xB,yB , x,y)) {
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity < 0) {
+                xBVelocity *= -1;
+            }
+        }
+    }
+    boolean collision_top_left(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition+4,4,4));
+    }
+    boolean collision_top_right(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition+4,yposition+4,4,4));
+    }
+    boolean collision_right(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition+4,yposition+2,4,4));
+    }
+    boolean collision_left(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition+2,4,4));
+    }
+    boolean collision_down_left(int xB,int yB , int xposition,int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition,4,4));
+    }
+    boolean collision_down_right(int xB,int yB , int xposition,int yposition) {
+        return new Rectangle(xB, yB, 5, 4).intersects(new Rectangle(xposition + 4, yposition, 4, 4));
+    }
+
     public void init(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -92,7 +222,130 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
     }
 
 
+    public void setting (){
+        if (xB<=0||xB>=maxWidth-10){
+            xBVelocity*=-1;
+        }
+        if (yB<=0||yB>=maxHeight-10){
+            yBVelocity*=-1;
+        }
+        xB+=xBVelocity;
+        yB+=yBVelocity;
+        if (collision_top_left(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity>0){
+                xBVelocity*=-1;
+            }
+        }
+        if (collision_top_right(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
 
+        }
+        if (collision_down_left(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB-=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+        }
+
+        if (collision_down_right(xB,yB , xposition,yposition)) {
+            yBVelocity *= -1;
+            yB -= 2;
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_right(xB,yB , xposition,yposition)) {
+
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_left(xB,yB , xposition,yposition)) {
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity < 0) {
+                xBVelocity *= -1;
+            }
+        }
+
+        //player 2
+        if (collision_top_left(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity>0){
+                xBVelocity*=-1;
+            }
+        }
+        if (collision_top_right(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+
+        }
+        if (collision_down_left(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB-=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+        }
+
+        if (collision_down_right(xB,yB , x,y)) {
+            yBVelocity *= -1;
+            yB -= 2;
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_right(xB,yB , x,y)) {
+
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_left(xB,yB , x,y)) {
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity < 0) {
+                xBVelocity *= -1;
+            }
+        }
+    }
+    boolean collision_top_left(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition+4,2,4));
+    }
+    boolean collision_top_right(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition+2,yposition+4,2,4));
+    }
+    boolean collision_right(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition+4,yposition+2,4,4));
+    }
+    boolean collision_left(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition+2,4,4));
+    }
+    boolean collision_down_left(int xB,int yB , int xposition,int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition,4,4));
+    }
+    boolean collision_down_right(int xB,int yB , int xposition,int yposition) {
+        return new Rectangle(xB, yB, 5, 4).intersects(new Rectangle(xposition + 4, yposition, 4, 4));
+    }
 
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
@@ -102,6 +355,7 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
         DrawHockey1(gl, xposition, yposition, 1);
         DrawHockey2(gl, x, y, 1);
         DrawHockeyBall(gl, xB, yB, 0.9f);
+        setting();
 
         if (xB <= 62 && xB >= 34 && yB <= 1) {
             CurrentPlayer2++;
