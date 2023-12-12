@@ -25,18 +25,17 @@ public class DifficultyMenu extends JFrame {
 
 
         difficultyPanel.add(createDifficultyButton("Easy"));
-        difficultyPanel.add(createDifficultyButton("Medium"));
-        difficultyPanel.add(createDifficultyButton("Hard"));
+        difficultyPanel.add(createDifficultyButtonMediumm("Medium"));
+        difficultyPanel.add(createDifficultyButtonHard("Hard"));
         JButton closeButton = createStyledButton("Close");
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startMenu.setVisible(true); // Show the existing main menu
-                dispose(); // Close the current frame
+                startMenu.setVisible(true);
+                dispose();
             }
         });
 
-        // Set layout for backgroundPanel
         backgroundPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -52,7 +51,7 @@ public class DifficultyMenu extends JFrame {
 
     private void startGame(String difficulty) {
         System.out.println("Starting game");
-        dispose(); // Close the current frame
+        dispose();
         new GamePlayAi(difficulty);
         new HockeyAi();
     }
@@ -70,17 +69,55 @@ public class DifficultyMenu extends JFrame {
     private JButton createDifficultyButton(String difficulty) {
         JButton button = new JButton(difficulty);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setContentAreaFilled(false); // Make the button transparent
-        button.setForeground(Color.green); // Set text color to white
-        button.setFont(new Font("Arial", Font.BOLD, 30)); // Set font size
+        button.setContentAreaFilled(false);
+        button.setForeground(Color.green);
+        button.setFont(new Font("Arial", Font.BOLD, 30));
         button.setBorder(null);
         button.addActionListener(e -> {
 
             System.out.println("Selected Difficulty: " + difficulty);
 
             startMenu.setVisible(true);
-            dispose(); // Close the current frame
+            dispose();
             startGame(difficulty);
+        });
+        return button;
+    }
+    private JButton createDifficultyButtonHard(String difficulty) {
+        JButton button = new JButton(difficulty);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setContentAreaFilled(false);
+        button.setForeground(Color.green);
+        button.setFont(new Font("Arial", Font.BOLD, 30));
+        button.setBorder(null);
+        button.addActionListener(e -> {
+
+            System.out.println("Selected Difficulty: " + difficulty);
+
+            startMenu.setVisible(true);
+            dispose();
+            dispose();
+            new Game_Ai_Hard(difficulty);
+            new HockeyHard();
+        });
+        return button;
+    }
+    private JButton createDifficultyButtonMediumm(String difficulty) {
+        JButton button = new JButton(difficulty);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setContentAreaFilled(false);
+        button.setForeground(Color.green);
+        button.setFont(new Font("Arial", Font.BOLD, 30));
+        button.setBorder(null);
+        button.addActionListener(e -> {
+
+            System.out.println("Selected Difficulty: " + difficulty);
+
+            startMenu.setVisible(true);
+            dispose();
+            dispose();
+            new Game_Ai_Meduim(difficulty);
+            new HockeyMeduim();
         });
         return button;
     }
