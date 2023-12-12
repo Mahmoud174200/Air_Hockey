@@ -28,6 +28,9 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
     private float xBVelocity = 1f;  // Adjust the initial velocity as needed
     private float yBVelocity = 2f;
 
+    private String player1Name;
+    private String player2Name;
+
 
 
     public GamePlayAi() {
