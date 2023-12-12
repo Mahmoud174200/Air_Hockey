@@ -54,14 +54,86 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
 
     public void initializeEasyDifficulty() {
 //
+         if (Math.pow(y - yB, 2) >= 10 * 10) {
+            if (yB > y)
+                if (y < 90)
+                    y += 1;
+            if (yB < y)
+                if (y > 50)
+                    y -= 1;
+        }
+        if (yB > 90 && xB > 45) {
+            x += -1;
+        }
+        if (yB > 90 && xB < 45) {
+            x += 1;
+        }
+        if ((xB > 90 || xB < -90) && yB > 10)
+            y += 1;
+        if (Math.pow(x - xB, 2) >= 10 * 10) {
+            if (xB > x)
+                if (x < 90)
+                    x += 1;
+            if (xB < x)
+                if (x > -90)
+                    x += -1;
+        }
     }
 
     public void initializeMediumDifficulty() {
 
+        if (Math.pow(y - yB, 2) >= 10 * 10) {
+            if (yB > y)
+                if (y < 90)
+                    y += 3;
+            if (yB < y)
+                if (y > 50)
+                    y -= 3;
+        }
+        if (yB > 90 && xB > 0) {
+            x += -3;
+        }
+        if (yB > 90 && xB < 0) {
+            x += 3;
+        }
+        if ((xB > 90 || xB < -900) && yB > 10)
+            y += 3;
+        if (Math.pow(x - xB, 2) >= 10 * 10) {
+            if (xB > x)
+                if (x < 90)
+                    x += 3;
+            if (xB < x)
+                if (x > -90)
+                    x += -3;
+        }
     }
 
     public void initializeHardDifficulty() {
 
+         if (Math.pow(y - yB, 2) >= 10 * 10) {
+            if (yB > y)
+                if (y < 75)
+                    y += 5;
+            if (yB < y)
+                if (y > 75)
+                    y -= 5;
+        }
+        if (yB > 90 && xB > 0) {
+            x += -5;
+        }
+        if (yB > 90 && xB < 0) {
+            x += 5;
+        }
+        if ((xB > 90 || xB < -900) && yB > 10)
+            y += 5;
+        if (Math.pow(x - xB, 2) >= 10 * 10) {
+            if (xB > x)
+                if (x < 90)
+                    x += 5;
+            if (xB < x)
+                if (x > -90)
+                    x += -5;
+        }
     }
 
     public void setting (){
@@ -352,11 +424,15 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         DrawBackground(gl);
+        initializeGame(difficulty);
+        initializeEasyDifficulty();
+        initializeMediumDifficulty();
+        initializeHardDifficulty();
         DrawHockey1(gl, xposition, yposition, 1);
         DrawHockey2(gl, x, y, 1);
         DrawHockeyBall(gl, xB, yB, 0.9f);
         setting();
-
+        
         
         if (xB <= 62 && xB >= 34 && yB <= 1) {
             CurrentPlayer2++;
