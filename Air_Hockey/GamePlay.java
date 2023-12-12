@@ -21,6 +21,9 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
     private int scorePlayer2 = 0;
     private boolean gameOver = false;
 
+    private String player1Name;
+    private String player2Name;
+
     int maxWidth = 100;
     int maxHeight = 100;
     int xposition = 45, yposition = 5;
@@ -215,11 +218,13 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
         DrawHockeyBall(gl, xB, yB, 0.9f); // Draw hockey ball normally
         setting();
 
+            
+
         if (xB <= 62 && xB >= 34 && yB <= 1) {
             CurrentPlayer2++;
             if (CurrentPlayer2 >= 1 && CurrentPlayer2 <= 2) {
                 Object[] options = {"OK"};
-                int option = JOptionPane.showOptionDialog(null, "Player 2 scored a goal!" + CurrentPlayer2 +"", "Game Pause",
+                int option = JOptionPane.showOptionDialog(null,  player2Name + " scored a goal!" + CurrentPlayer2 +"", "Game Pause",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.OK_OPTION) {
@@ -230,7 +235,7 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
                 }
             } else if (CurrentPlayer2 == 3) {
                 Object[] options = {"Yes", "No"};
-                int option = JOptionPane.showOptionDialog(null, "Player 2 Wins! Play again?", "Game Over",
+                int option = JOptionPane.showOptionDialog(null,player2Name + " Wins! Play again?", "Game Over",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.YES_OPTION) {
@@ -246,7 +251,7 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
             currentPlayer1++;
             if (currentPlayer1 >= 1 && currentPlayer1 <= 2) {
                 Object[] options = {"OK"};
-                int option = JOptionPane.showOptionDialog(null, "Player 1 scored a goal!" + currentPlayer1 +"", "Game Pause",
+                int option = JOptionPane.showOptionDialog(null, player1Name+" scored a goal!" + currentPlayer1 +"", "Game Pause",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.OK_OPTION) {
@@ -257,15 +262,15 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
                 }
             } else if (currentPlayer1 == 3) {
                 Object[] options = {"Yes", "No"};
-                int option = JOptionPane.showOptionDialog(null, "Player 1 Wins! Play again?", "Game Over",
+                int option = JOptionPane.showOptionDialog(null, player1Name+" Wins! Play again?", "Game Over",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.YES_OPTION) {
-                    new GamePlay(difficulty); // Restart the game
+                    new GamePlay(difficulty);
                     currentPlayer1 = 0;
                     CurrentPlayer2 = 0;
                 } else if (option == JOptionPane.NO_OPTION) {
-                    new StartMenu(); // Go back to the start menu
+                    new StartMenu();
                 }
             }
 
@@ -277,16 +282,29 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
                 gameStarted = true; // Set gameStarted to true when Enter is pressed
                 return;
             }
+
             if (!gameStarted) {
-                // Return if the game hasn't started yet
-                return;
+            gameStarted = true;
+            
+            player1Name = JOptionPane.showInputDialog(null, "Enter Player 1's name:", "Player 1", JOptionPane.PLAIN_MESSAGE);
+            if (player1Name == null  player1Name.isEmpty()) {
+                player1Name = "Player 1"; 
             }
+            
+            player2Name = JOptionPane.showInputDialog(null, "Enter Player 2's name:", "Player 2", JOptionPane.PLAIN_MESSAGE);
+            if (player2Name == null  player2Name.isEmpty()) {
+                player2Name = "Player 2"; 
+            }
+
+            String message = String.format("Press Enter to start the game.\nPlayer 1: %s\nPlayer 2: %s", player1Name, player2Name);
+
+            JOptionPane.showMessageDialog(null, message, "Game Start", JOptionPane.INFORMATION_MESSAGE);
+
+        }
+            
+            
     }
-//    public void Twoballscollide(int xb, int yb, int xposition, int yposition) {
-//        if  (xB >= xposition - 5 && xB <= xposition + 5 && yB >= yposition - 5 && yB <= yposition + 5) {
-//            isAnimationInProgress = true;
-//        }
-//    }
+
 
     private void animateHockeyBall(GL gl) {
 
