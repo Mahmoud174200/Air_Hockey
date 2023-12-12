@@ -262,13 +262,13 @@ public class Game_Ai_Meduim extends AirListener implements GLEventListener,Mouse
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
 
-
+        handelMousePosition ();
 
         initializeMediumDifficulty();
         DrawBackground(gl);
         DrawHockey1(gl, xposition, yposition, 1);
         DrawHockey2(gl, x, y, 1);
-
+    
         DrawHockeyBall(gl, xB, yB, 0.9f); // Draw hockey ball normally
         setting();
 
@@ -440,7 +440,23 @@ public class Game_Ai_Meduim extends AirListener implements GLEventListener,Mouse
 
         gl.glDisable(GL.GL_BLEND);
     }
+public void handelMousePosition (){
+        if (xposition > 3) {
+            xposition--;
+        }
+        if (xposition < maxWidth - 14) {
+            xposition++;
+        }
+        if (yposition > 2) {
+            yposition--;
+        }
+        if (yposition < 40) {
+            yposition++;
+        }else {
+            yposition=40;
+        }
 
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
