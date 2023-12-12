@@ -357,11 +357,12 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
         DrawHockeyBall(gl, xB, yB, 0.9f);
         setting();
 
+        
         if (xB <= 62 && xB >= 34 && yB <= 1) {
             CurrentPlayer2++;
             if (CurrentPlayer2 >= 1 && CurrentPlayer2 <= 2) {
                 Object[] options = {"OK"};
-                int option = JOptionPane.showOptionDialog(null, "player 2 scored a goal! number : " + CurrentPlayer2 +"", "Game Pause",
+                int option = JOptionPane.showOptionDialog(null,  player2Name + " scored a goal!" + CurrentPlayer2 +"", "Game Pause",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.OK_OPTION) {
@@ -372,15 +373,15 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
                 }
             } else if (CurrentPlayer2 == 3) {
                 Object[] options = {"Yes", "No"};
-                int option = JOptionPane.showOptionDialog(null, "Player 2 Wins! Play again?", "Game Over",
+                int option = JOptionPane.showOptionDialog(null,player2Name + " Wins! Play again?", "Game Over",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.YES_OPTION) {
-                    new GamePlay(difficulty);
+                    new GamePlay(difficulty); // Restart the game
                     currentPlayer1 = 0;
                     CurrentPlayer2 = 0;
                 } else if (option == JOptionPane.NO_OPTION) {
-                    new Startmenu();
+                    new StartMenu(); // Go back to the start menu
                 }
             }
         }
@@ -388,7 +389,7 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
             currentPlayer1++;
             if (currentPlayer1 >= 1 && currentPlayer1 <= 2) {
                 Object[] options = {"OK"};
-                int option = JOptionPane.showOptionDialog(null, "player 1  scored a goal! number : " + currentPlayer1 +"", "Game Pause",
+                int option = JOptionPane.showOptionDialog(null, player1Name+" scored a goal!" + currentPlayer1 +"", "Game Pause",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.OK_OPTION) {
@@ -399,19 +400,36 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
                 }
             } else if (currentPlayer1 == 3) {
                 Object[] options = {"Yes", "No"};
-                int option = JOptionPane.showOptionDialog(null, "Player 1 Wins! Play again?", "Game Over",
+                int option = JOptionPane.showOptionDialog(null, player1Name+" Wins! Play again?", "Game Over",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.YES_OPTION) {
-                    new GamePlay(difficulty); // Restart the game
+                    new GamePlay(difficulty);
                     currentPlayer1 = 0;
                     CurrentPlayer2 = 0;
                 } else if (option == JOptionPane.NO_OPTION) {
-                    new Startmenu(); // Go back to the start menu
+                    new StartMenu();
                 }
             }
 
-    }
+        }
+            if (!gameStarted) {
+                gameStarted = true;
+                player1Name = JOptionPane.showInputDialog(null, "Enter Player 1's name:", "Player 1", JOptionPane.PLAIN_MESSAGE);
+                if (player1Name == null || player1Name.isEmpty()) {
+                    player1Name = "Player 1";
+                }
+
+                player2Name = JOptionPane.showInputDialog(null, "Enter Player 2's name:", "Player 2", JOptionPane.PLAIN_MESSAGE);
+                if (player2Name == null || player2Name.isEmpty()) {
+                    player2Name = "Player 2";
+                }
+
+                String message = String.format("Press Enter to start the game.\nPlayer 1: %s\nPlayer 2: %s", player1Name, player2Name);
+
+                JOptionPane.showMessageDialog(null, message, "Game Start", JOptionPane.INFORMATION_MESSAGE);
+
+            }
 
 }
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {}
