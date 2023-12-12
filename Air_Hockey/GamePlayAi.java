@@ -431,6 +431,7 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
         initializeEasyDifficulty();
         initializeMediumDifficulty();
         initializeHardDifficulty();
+        handelMousePosition();
         DrawHockey1(gl, xposition, yposition, 1);
         DrawHockey2(gl, x, y, 1);
         DrawHockeyBall(gl, xB, yB, 0.9f);
@@ -656,10 +657,22 @@ public class GamePlayAi extends AirListener implements GLEventListener,MouseList
         yposition = 100 - yposition;
     }
     public void handelMousePosition (){
-
+        if (xposition > 3) {
+            xposition--;
+        }
+        if (xposition < maxWidth - 14) {
+            xposition++;
+        }
+        if (yposition > 2) {
+            yposition--;
+        }
+        if (yposition < 40) {
+            yposition++;
+        }else {
+            yposition=40;
+        }
 
     }
-
     @Override
     public void keyTyped(KeyEvent e) {
 
