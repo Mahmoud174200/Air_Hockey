@@ -260,8 +260,7 @@ public class Game_Ai_Hard extends AirListener implements GLEventListener,MouseLi
         GL gl = drawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
-
-
+        handelMousePosition ();
 
         initializeHardDifficulty();
         DrawBackground(gl);
@@ -439,7 +438,23 @@ public class Game_Ai_Hard extends AirListener implements GLEventListener,MouseLi
 
         gl.glDisable(GL.GL_BLEND);
     }
+    public void handelMousePosition (){
+        if (xposition > 3) {
+            xposition--;
+        }
+        if (xposition < maxWidth - 14) {
+            xposition++;
+        }
+        if (yposition > 2) {
+            yposition--;
+        }
+        if (yposition < 40) {
+            yposition++;
+        }else {
+            yposition=40;
+        }
 
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
