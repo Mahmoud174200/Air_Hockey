@@ -1,4 +1,5 @@
 package Air_Hockey;
+
 import Texture.TextureReader;
 
 import java.awt.*;
@@ -13,16 +14,25 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
     String[] textureNames = {"table.png","Hockey1.png","Hockey2.png","th.png"};
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     int[] textures = new int[textureNames.length];
-    private boolean enterPressed = false;
-
-
+    private boolean gameStarted = false;
     int currentPlayer1 = 0;
     int CurrentPlayer2 = 0;
+    private int scorePlayer1 = 0;
+    private int scorePlayer2 = 0;
+    private boolean gameOver = false;
+
     int maxWidth = 100;
     int maxHeight = 100;
     int xposition = 45, yposition = 5;
     int x = 45, y = 90;
     int xB = 45, yB = 40;
+    float controlX,controlY;
+    private float xBVelocity = 1f;  // Adjust the initial velocity as needed
+    private float yBVelocity = 2f;
+    private boolean isAnimationInProgress = false;
+    private int animationSteps = 0;
+    int xinit,yinit;
+
 
     public GamePlay() {
 
@@ -32,32 +42,6 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
     public GamePlay(String difficulty) {
         this.difficulty = difficulty;
         setDifficulty(difficulty);
-        initializeGame();
-    }
-    private void initializeGame() {
-        // Common initialization logic regardless of difficulty
-        // For example, initializing textures, game objects, etc.
-
-        // Custom initialization based on the selected difficulty
-        if ("easy".equalsIgnoreCase(difficulty)) {
-            initializeEasyDifficulty();
-        } else if ("medium".equalsIgnoreCase(difficulty)) {
-            initializeMediumDifficulty();
-        } else if ("hard".equalsIgnoreCase(difficulty)) {
-            initializeHardDifficulty();
-        }
-    }
-
-    public void initializeEasyDifficulty() {
-        // Implement initialization logic for easy difficulty
-    }
-
-    public void initializeMediumDifficulty() {
-        // Implement initialization logic for medium difficulty
-    }
-
-    public void initializeHardDifficulty() {
-        // Implement initialization logic for hard difficulty
     }
     public void init(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
@@ -91,33 +75,157 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
         gl.glLoadIdentity();
         gl.glOrtho(0.0, 100, 0.0, 100, -1.0, 1.0);
     }
+    public void setting (){
+        if (xB<=0||xB>=maxWidth-10){
+            xBVelocity*=-1;
+        }
+        if (yB<=0||yB>=maxHeight-10){
+            yBVelocity*=-1;
+        }
+        xB+=xBVelocity;
+        yB+=yBVelocity;
+        if (collision_top_left(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity>0){
+                xBVelocity*=-1;
+            }
+        }
+        if (collision_top_right(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
 
+        }
+        if (collision_down_left(xB,yB , xposition,yposition)){
+            yBVelocity*=-1;
+            yB-=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+        }
 
+        if (collision_down_right(xB,yB , xposition,yposition)) {
+            yBVelocity *= -1;
+            yB -= 2;
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_right(xB,yB , xposition,yposition)) {
 
+            yBVelocity *= -1;
+            yB += 2;
 
-    public void display(GLAutoDrawable drawable) {
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_left(xB,yB , xposition,yposition)) {
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity < 0) {
+                xBVelocity *= -1;
+            }
+        }
+
+        //player 2
+        if (collision_top_left(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity>0){
+                xBVelocity*=-1;
+            }
+        }
+        if (collision_top_right(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB+=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+
+        }
+        if (collision_down_left(xB,yB , x,y)){
+            yBVelocity*=-1;
+            yB-=2;
+            if (xBVelocity<0){
+                xBVelocity*=-1;
+            }
+        }
+
+        if (collision_down_right(xB,yB , x,y)) {
+            yBVelocity *= -1;
+            yB -= 2;
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_right(xB,yB , x,y)) {
+
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity > 0) {
+                xBVelocity *= -1;
+            }
+        }
+        if (collision_left(xB,yB , x,y)) {
+            yBVelocity *= -1;
+            yB += 2;
+
+            if (xBVelocity < 0) {
+                xBVelocity *= -1;
+            }
+        }
+    }
+    boolean collision_top_left(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition+4,2,4));
+    }
+    boolean collision_top_right(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition+2,yposition+4,2,4));
+    }
+    boolean collision_right(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition+4,yposition+2,4,4));
+    }
+    boolean collision_left(int xB, int yB , int xposition, int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition+2,4,4));
+    }
+    boolean collision_down_left(int xB,int yB , int xposition,int yposition){
+        return new Rectangle(xB,yB ,5,4).intersects(new Rectangle(xposition,yposition,4,4));
+    }
+    boolean collision_down_right(int xB,int yB , int xposition,int yposition) {
+        return new Rectangle(xB, yB, 5, 4).intersects(new Rectangle(xposition + 4, yposition, 4, 4));
+    }
+        public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
+        handelMousePosition();
+        handleKeyPress();
+
+//        Twoballscollide(xB, yB, xposition, yposition); // Check for collision
+
         DrawBackground(gl);
         DrawHockey1(gl, xposition, yposition, 1);
         DrawHockey2(gl, x, y, 1);
-        DrawHockeyBall(gl, xB, yB, 0.9f);
+
+        DrawHockeyBall(gl, xB, yB, 0.9f); // Draw hockey ball normally
+        setting();
 
         if (xB <= 62 && xB >= 34 && yB <= 1) {
             CurrentPlayer2++;
             if (CurrentPlayer2 >= 1 && CurrentPlayer2 <= 2) {
                 Object[] options = {"OK"};
-                int option = JOptionPane.showOptionDialog(null, "player 2 scored a goal! number : " + CurrentPlayer2 + "", "Game Pause",
+                int option = JOptionPane.showOptionDialog(null, "Player 2 scored a goal!" + CurrentPlayer2 +"", "Game Pause",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.OK_OPTION) {
-                    xB = 45;
-                    yB = 45;
-                    x = 45;
-                    y = 90;
-                    xposition = 45;
-                    yposition = 5;
+                    xB = 45; yB = 45;
+                    x = 45; y = 90;
+                    xposition = 45 ; yposition = 5;
                     new GamePlay(difficulty); // Restart the game
                 }
             } else if (CurrentPlayer2 == 3) {
@@ -126,11 +234,11 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.YES_OPTION) {
-                    new GamePlay(difficulty);
+                    new GamePlay(difficulty); // Restart the game
                     currentPlayer1 = 0;
                     CurrentPlayer2 = 0;
                 } else if (option == JOptionPane.NO_OPTION) {
-                    new Startmenu();
+                    new StartMenu(); // Go back to the start menu
                 }
             }
         }
@@ -138,16 +246,13 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
             currentPlayer1++;
             if (currentPlayer1 >= 1 && currentPlayer1 <= 2) {
                 Object[] options = {"OK"};
-                int option = JOptionPane.showOptionDialog(null, "player 1  scored a goal! number : " + currentPlayer1 + "", "Game Pause",
+                int option = JOptionPane.showOptionDialog(null, "Player 1 scored a goal!" + currentPlayer1 +"", "Game Pause",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (option == JOptionPane.OK_OPTION) {
-                    xB = 45;
-                    yB = 45;
-                    x = 45;
-                    y = 90;
-                    xposition = 45;
-                    yposition = 5;
+                    xB = 45; yB = 45;
+                    x = 45; y = 90;
+                    xposition = 45 ; yposition = 5;
                     new GamePlay(difficulty); // Restart the game
                 }
             } else if (currentPlayer1 == 3) {
@@ -160,14 +265,58 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
                     currentPlayer1 = 0;
                     CurrentPlayer2 = 0;
                 } else if (option == JOptionPane.NO_OPTION) {
-                    new Startmenu(); // Go back to the start menu
+                    new StartMenu(); // Go back to the start menu
                 }
             }
 
         }
+            if (!gameStarted) {
 
-
+                String message = "Press Enter to start the game.";
+                JOptionPane.showMessageDialog(null, message, "Game Start", JOptionPane.INFORMATION_MESSAGE);
+                gameStarted = true; // Set gameStarted to true when Enter is pressed
+                return;
+            }
+            if (!gameStarted) {
+                // Return if the game hasn't started yet
+                return;
+            }
     }
+//    public void Twoballscollide(int xb, int yb, int xposition, int yposition) {
+//        if  (xB >= xposition - 5 && xB <= xposition + 5 && yB >= yposition - 5 && yB <= yposition + 5) {
+//            isAnimationInProgress = true;
+//        }
+//    }
+
+    private void animateHockeyBall(GL gl) {
+
+        if (animationSteps < 30) {
+            yB++; // Move the yB ball upwards
+            animationSteps++;
+        } else if (animationSteps == 30) {
+            yB = 63; // Move the ball to a specific y-coordinate
+            animationSteps++; // Increment animationSteps to avoid continuous execution of this block
+        } else {
+            // Ball is at the negative position, continue moving downwards until yB reaches 10
+            if (yB > 10) {
+                yB--;
+                // Move the ball downwards
+                animationSteps++; // Increment animationSteps to continue the animation
+            } else if(animationSteps<=10) {
+                // yB has reached 10, reset animationSteps to repeat the animation
+                yB++;
+                animationSteps ++;
+            }else {
+                animationSteps=-29;
+            }
+        }
+
+
+        DrawHockeyBall(gl, xB, yB, 0.9f); // Draw the ball at the updated position
+    }
+
+
+
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {}
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {}
 
@@ -210,16 +359,10 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
         gl.glEnd();
 
-
-
         gl.glPopMatrix();
 
         gl.glDisable(GL.GL_BLEND);
-
-
     }
-
-
 
     public void DrawHockey2(GL gl, int x, int y, float scale) {
         gl.glEnable(GL.GL_BLEND);
@@ -275,7 +418,29 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
         // TODO Auto-generated method stub
     }
 
+    public void handleKeyPress() {
+        if (isKeyPressed(KeyEvent.VK_A)) {
+            if (x > 3) {
+                x--;
+            }
+        }
+        if (isKeyPressed(KeyEvent.VK_D)) {
+            if (x < maxWidth - 14) {
+                x++;
+            }
+        }
+        if (isKeyPressed(KeyEvent.VK_S)) {
+            if (y > 50) {
+                y--;
+            }
+        }
+        if (isKeyPressed(KeyEvent.VK_W)) {
+            if (y < 88) {
+                y++;
+            }
+        }
 
+    }
 
 
 
@@ -285,10 +450,6 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
     public void keyPressed(final KeyEvent event) {
         int keyCode = event.getKeyCode();
         keyBits.set(keyCode);
-
-        if (keyCode == KeyEvent.VK_ENTER) {
-            enterPressed = true;
-        }
     }
 
     @Override
@@ -308,7 +469,19 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        double xe = e.getX();
+        double ye = e.getY();
 
+//        System.out.println(xe+" "+ye);
+        Component c = e.getComponent();
+        double width = c.getWidth();
+        double height = c.getHeight();
+
+        xposition = (int) ((xe / width) * 100);
+        yposition = (int) ((ye / height) * 100);
+
+        yposition = 100 - yposition;
+        System.out.println(xposition+" "+yposition);
     }
 
     @Override
@@ -349,5 +522,21 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
         xposition = xposition + 4;
         yposition = 100 - yposition;
     }
+    public void handelMousePosition (){
+        if (xposition > 3) {
+            xposition--;
+        }
+        if (xposition < maxWidth - 14) {
+            xposition++;
+        }
+        if (yposition > 2) {
+            yposition--;
+        }
+        if (yposition < 40) {
+            yposition++;
+        }else {
+            yposition=40;
+        }
 
+    }
 }
