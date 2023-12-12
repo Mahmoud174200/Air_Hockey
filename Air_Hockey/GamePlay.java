@@ -276,31 +276,22 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
 
         }
             if (!gameStarted) {
+                gameStarted = true;
+                player1Name = JOptionPane.showInputDialog(null, "Enter Player 1's name:", "Player 1", JOptionPane.PLAIN_MESSAGE);
+                if (player1Name == null || player1Name.isEmpty()) {
+                    player1Name = "Player 1";
+                }
 
-                String message = "Press Enter to start the game.";
+                player2Name = JOptionPane.showInputDialog(null, "Enter Player 2's name:", "Player 2", JOptionPane.PLAIN_MESSAGE);
+                if (player2Name == null || player2Name.isEmpty()) {
+                    player2Name = "Player 2";
+                }
+
+                String message = String.format("Press Enter to start the game.\nPlayer 1: %s\nPlayer 2: %s", player1Name, player2Name);
+
                 JOptionPane.showMessageDialog(null, message, "Game Start", JOptionPane.INFORMATION_MESSAGE);
-                gameStarted = true; // Set gameStarted to true when Enter is pressed
-                return;
+
             }
-
-            if (!gameStarted) {
-            gameStarted = true;
-            
-            player1Name = JOptionPane.showInputDialog(null, "Enter Player 1's name:", "Player 1", JOptionPane.PLAIN_MESSAGE);
-            if (player1Name == null  player1Name.isEmpty()) {
-                player1Name = "Player 1"; 
-            }
-            
-            player2Name = JOptionPane.showInputDialog(null, "Enter Player 2's name:", "Player 2", JOptionPane.PLAIN_MESSAGE);
-            if (player2Name == null  player2Name.isEmpty()) {
-                player2Name = "Player 2"; 
-            }
-
-            String message = String.format("Press Enter to start the game.\nPlayer 1: %s\nPlayer 2: %s", player1Name, player2Name);
-
-            JOptionPane.showMessageDialog(null, message, "Game Start", JOptionPane.INFORMATION_MESSAGE);
-
-        }
             
             
     }
