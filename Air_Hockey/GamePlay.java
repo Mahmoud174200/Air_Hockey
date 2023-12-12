@@ -296,36 +296,6 @@ public class GamePlay extends AirListener implements GLEventListener, KeyListene
             
     }
 
-
-    private void animateHockeyBall(GL gl) {
-
-        if (animationSteps < 30) {
-            yB++; // Move the yB ball upwards
-            animationSteps++;
-        } else if (animationSteps == 30) {
-            yB = 63; // Move the ball to a specific y-coordinate
-            animationSteps++; // Increment animationSteps to avoid continuous execution of this block
-        } else {
-            // Ball is at the negative position, continue moving downwards until yB reaches 10
-            if (yB > 10) {
-                yB--;
-                // Move the ball downwards
-                animationSteps++; // Increment animationSteps to continue the animation
-            } else if(animationSteps<=10) {
-                // yB has reached 10, reset animationSteps to repeat the animation
-                yB++;
-                animationSteps ++;
-            }else {
-                animationSteps=-29;
-            }
-        }
-
-
-        DrawHockeyBall(gl, xB, yB, 0.9f); // Draw the ball at the updated position
-    }
-
-
-
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {}
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {}
 
